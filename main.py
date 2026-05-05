@@ -1,3 +1,11 @@
+
+"""
+NVIDIA Stock Analysis Tool
+--------------------------
+DISCLAIMER: This software is for educational purposes only.
+It is NOT financial advice. Trading stocks involves significant risk.
+"""
+
 import warnings
 from data_loader import load_stock_data
 from indicators import calculate_macd
@@ -6,27 +14,31 @@ from visualization import plot_stock_with_signals, plot_macd
 
 warnings.filterwarnings("ignore")
 
-# 1. Load Data
-df = load_stock_data("NVDA_data.csv")
+if __name__ == "__main__":
+    print("-" * 30)
+    print("NOTICE: For Educational Use Only")
+    print("-" * 30 + "\n")
+    # 1. Load Data
+    df = load_stock_data("NVDA_data.csv")
 
-# 2. Calculate Indicators
-df["MACD"], df["Signal"] = calculate_macd(df["Close"].tolist())
+    # 2. Calculate Indicators
+    df["MACD"], df["Signal"] = calculate_macd(df["Close"].tolist())
 
-# 3. Get Signals
-buy_indices, sell_indices = find_trade_signals(df["MACD"], df["Signal"])
+    # 3. Get Signals
+    buy_indices, sell_indices = find_trade_signals(df["MACD"], df["Signal"])
 
-# 4. Simulation & Analytics
-portfolio = simulate_trading(df, buy_indices, sell_indices)
+    # 4. Simulation & Analytics
+    portfolio = simulate_trading(df, buy_indices, sell_indices)
 
-print(f"Initial Capital: {portfolio[0]:.2f} USD")
-print(f"Final Capital: {portfolio[-1]:.2f} USD")
+    print(f"Initial Capital: {portfolio[0]:.2f} USD")
+    print(f"Final Capital: {portfolio[-1]:.2f} USD")
 
-# 5. Export Log
-trade_log = generate_trade_log(df, buy_indices, sell_indices)
-trade_log.to_csv("trade_log.csv", index=False)
-print("\nTrade Log (First 5 rows):")
-print(trade_log.head())
+    # 5. Export Log
+    trade_log = generate_trade_log(df, buy_indices, sell_indices)
+    trade_log.to_csv("trade_log.csv", index=False)
+    print("\nTrade Log (First 5 rows):")
+    print(trade_log.head())
 
-# 6. Visualization
-plot_stock_with_signals(df, buy_indices, sell_indices)
-plot_macd(df)
+    # 6. Visualization
+    plot_stock_with_signals(df, buy_indices, sell_indices)
+    plot_macd(df)
